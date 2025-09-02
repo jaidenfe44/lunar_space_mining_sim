@@ -1,3 +1,6 @@
+#ifndef STATION_HPP
+#define STATION_HPP
+
 #include "MiningTruck.hpp"
 
 
@@ -21,7 +24,7 @@ class Station
 	private:
 		// Time it takes to unload a truck, in minutes
 		unsigned int unload_time = 5; 
-}
+};
 
 
 
@@ -37,3 +40,4 @@ void Station::addTruck(MiningTruck* truck)
 	// TODO
 }
 
+#endif // STATION_HPP

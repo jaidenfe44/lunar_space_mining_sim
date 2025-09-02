@@ -1,4 +1,5 @@
-
+#ifndef MINING_TRUCK_HPP
+#define MINING_TRUCK_HPP
 /**
  * Mining Truck Requirements:
  *   - Mining trucks can spend a random duration between 1 to 5 hours mining at a site
@@ -12,10 +13,9 @@ class MiningTruck
 		MiningTruck() { /* TODO */ };
 
 		unsigned int computeMineTime();
-		void incrementWaitTime();
 
-		// Time in queue at unload station
-		unsigned int queue_time = 0;
+		// Time in queue at unload station or time away mining
+		unsigned int wait_time = 0;
 
 	private:
 		// Travel time between an unload station and mining site, in minutes
@@ -34,3 +34,4 @@ unsigned int MiningTruck::computeMineTime(){
 	return 60;
 }
 
+#endif // MINING_TRUCK_HPP

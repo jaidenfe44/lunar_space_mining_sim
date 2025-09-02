@@ -18,5 +18,5 @@ int main() {
 	printf("Truck Mine Time: %i\n", t);
 
 	auto station = Station();
-	unsigned int s = station.addTruck(&truck);
+	station.addTruck(&truck);
 }
