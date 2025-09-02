@@ -40,3 +40,24 @@ It is not the objective to spend an excessive amount of time on this challenge o
 developed system. Feel free to include pseudocode (in comments) to explain what you would do if
 given more time or resources. The focus is on showcasing your problem-solving and coding skills
 within a reasonable time frame.
+
+
+## Design Process
+
+This section is used as a scratch pad space for notes and design considerations to describe my though process when approaching the exercise.
+
+### Main Loop Design
+
+The sim main loop will be in charge of system wide variables such as time (or "System Ticks" as I refer to them in this section). The `system_tick` represents minutes the simulation is running. In this initial approach the sim runtime is 4320 minutes (72 hours).
+
+The following is a flow diagram for the basic design of the main loop.
+
+![lunar_mining_sim_main_flow_diagram-2](https://github.com/user-attachments/assets/e0d57a73-3acc-4052-a6ae-cc06a66a61bb)
+
+### Mining Truck Design
+
+TODO
+
+### Station Design
+
+TODO
