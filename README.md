@@ -43,11 +43,11 @@ within a reasonable time frame.
 
 <br><br>
 
-## Design Process
+# Design Process
 
 This section is used as a scratch pad space for notes and design considerations to describe my though process when approaching the exercise.
 
-### Main Loop Design
+## Main Loop Design
 
 The sim main loop will be in charge of system count and stepping through the simulator. The `system count` represents minutes the simulation is running. In this approach the sim runtime is 4320 minutes (72 hours). The `main.cpp` file implements the system runtime loop (in minutes) and calls the `StationHub::step()` function for every simulation minute. Everything within the flow diagram is contained within this step function, with the exception of report generation and system count handling.
 
@@ -55,7 +55,7 @@ The following is a flow diagram representing the design of the main loop and ste
 
 ![lunar_mining_sim_main_flow_diagram](https://github.com/user-attachments/assets/5aed72e4-8ebd-458f-b218-3b393e91a1cf)
 
-### StationHub/Station Design
+## StationHub/Station Design
 
 The number of stations is specified in the System.hpp file as `numStations`. All of the Stations are contianed within a single `StationHub` object, which handles the queue logic and simulation step functinality. The queue logic is implemented in two main functions: `StationHub::addToStation()` and `StationHub::removeFromStation()`.
 
@@ -65,11 +65,14 @@ The following diagram shows the flow of the `StationHub::addToStation()` and `St
 
 Here we see that the `StationHub` keeps track of the next available station in a variable called `StationHub::nextAvailableStation` which contains the index into the station array.
 
-The following diagram shows the flow of the `StationHub::removeFromStation()` function:
+The following diagram shows the flow of the `StationHub::removeFromStation()` and `Station::removeTruck()` functions:
+
+![lunar_mining_sim_removeTruckFromStation_flow_diagram](https://github.com/user-attachments/assets/38325b97-02ab-4114-aff8-0d649d26572d)
+
+Here we leverage the stored `MiningTruck::unload_station` variable that contains the index of the Station that particular truck is unloading at. This allows the `StationHub` to index directly into the Station array and call `Station::removeTruck()` directly on the correct Station object. Once the `MiningTruck` is removed from the queue, we check if the queue is empty. If it is not empty, then we need to update the state of the `MiningTruck` now at the front of the queue to `eUnloading` instead of `eQueued` so that the `StationHub::step()` function decrements the `MiningTruck::work_time` (down counter representing how many steps to "work" and take up resources until it can switch states again) rather than incrementing the `MiningTruck::wait_time` (up counter representing the amount of time spent in a queue waiting for available resources).
 
 
-
-### Mining Truck Design
+## Mining Truck Design
 
 TODO
 
