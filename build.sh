@@ -2,13 +2,11 @@
 
 
 build_target='' # Default to empty (no target)
-
-include="-Isrc/ -Ilib/ -Itst/"
+verbose=''
 
 
 build_sim() {
 
-	# TODO
 	echo "Building Sim"
 
 	if [ -d "./bin" ]; then
@@ -17,7 +15,7 @@ build_sim() {
 		mkdir bin
 	fi
 
-	clang++ src/main.cpp -o bin/sim
+	clang++ src/MiningTruck.cpp src/StationHub.cpp src/main.cpp -o bin/sim $verbose
 }
 
 build_test() {
@@ -34,9 +32,10 @@ usage() {
 }
 
 
-while getopts 't:' flag; do
+while getopts 't:v' flag; do
   case "${flag}" in
 	t) build_target="${OPTARG}" ;;
+	v) verbose='-v' ;;
     *) usage
        exit 1 ;;
   esac

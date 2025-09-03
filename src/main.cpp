@@ -1,7 +1,6 @@
-#include "MiningTruck.hpp"
-#include "Station.hpp"
+#include "System.hpp"
+#include "StationHub.hpp"
 
-#include <cstdio>
 
 /**
  * Requirements:
@@ -10,13 +9,22 @@
  *   - The simulation represents 72 hours of non-stop mining and must execute faster than real-time to provide timely analysis
  */
 int main() {
-	// TODO: Define the main simulation flow here
+	// Initialize System Ticks (minutes)
+	unsigned int sysCount = 0;
 
-	auto truck = MiningTruck();
+	// Initialize the Station Hub object
+	StationHub &stationHub = StationHub::getInstance();
 
-	unsigned int t = truck.computeMineTime();
-	printf("Truck Mine Time: %i\n", t);
+	// Main Loop
+	while(sysCount < simRuntime)
+	{
+		// Step through one sim minute
+		stationHub.step();
 
-	auto station = Station();
-	station.addTruck(&truck);
+		sysCount++;
+	}
+
+	stationHub.generateReport();
+
+	return 0;
 }
