@@ -54,10 +54,16 @@ The following is a flow diagram for the basic design of the main loop.
 
 ![lunar_mining_sim_main_flow_diagram](https://github.com/user-attachments/assets/5aed72e4-8ebd-458f-b218-3b393e91a1cf)
 
+### Station Design
+
+The number of stations is specified in the System.hpp file as `numStations`. All of the Stations are contianed within a single `StationHub` object, which handles the queue logic and simulation step functinality.
+
+The following diagram shows the flow of the `StationHub::addToStation()` function:
+
+![lunar_mining_sim_StationHub_addToStation_flow_diagram](https://github.com/user-attachments/assets/5b63384c-8ec2-476f-b849-3a177bfef5e5)!
+
+
 ### Mining Truck Design
 
 TODO
 
-### Station Design
-
-TODO
