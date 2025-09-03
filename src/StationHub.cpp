@@ -17,6 +17,7 @@ void StationHub::step()
 		// If the truck is waiting in a queue, increment the wait timer, otherwise decrement the work timer
 		idx->state == TruckState::eQueued ? idx->wait_time++ : idx->work_time--;
 
+
 		if(idx->work_time == 0)
 		{
 			// Check if truck was mining
@@ -41,19 +42,40 @@ void StationHub::step()
 
 
 /**
- * TODO
+ * Update the index to the next available station
+ *
+ * @return void
+ */
+void StationHub::updateNextAvailable()
+{
+	// Note: Currently just implementing round-robin availability
+	//      Future improvements could be made by using a weighted
+	//		optimization on queue size or time used or "helium mined"
+	//		as the weighting factor(s)
+
+	nextAvailableStation++;
+	nextAvailableStation %= numStations;
+}
+
+
+/**
+ * Add a MiningTruck to the next available Station
+ *
+ * @param A pointer to the truck object that is headed to the next
+ *			available station or station queue
+ *
+ * @return void
  */
 void StationHub::addToStation(MiningTruck* truck)
 {
 	// Add the truck to the next available station or station queue
 	stations_a[nextAvailableStation].addTruck(truck);
 
+	// Store Station index
+	truck->unload_station = nextAvailableStation;
 
-
-	// TODO
-
-	// TODO
-	printf("Added truck to station\n");
+	// Pick which Station should receive the next Mining Truck
+	updateNextAvailable();
 }
 
 
@@ -62,8 +84,9 @@ void StationHub::addToStation(MiningTruck* truck)
  */
 void StationHub::removeFromStation(MiningTruck* truck)
 {
-	// TODO: Need to be aware of the next truck in the queue and its state
-	// TODO
+	stations_a[truck->unload_station].removeTruck();
+
+	truck->computeMineTime();
 }
 
 
@@ -73,6 +96,7 @@ void StationHub::removeFromStation(MiningTruck* truck)
 void StationHub::generateReport()
 {
 	// TODO
+	printf("Generate Reports...\n");
 }
 
 
@@ -88,11 +112,28 @@ void Station::addTruck(MiningTruck* truck)
 	// Update the trucks state
 	truck->state = unloadQueue.empty() ? TruckState::eUnloading : TruckState::eQueued;
 
-	// Update the trucks work time
-	truck->work_time = unload_time;
-
 	// Add the mining truck to the queue
 	unloadQueue.push(truck);
 
-	// TODO
+	// Update the trucks work time
+	truck->work_time = unload_time;
 }
+
+
+/**
+ * TODO
+ */
+void Station::removeTruck()
+{
+	// Remove the truck from the front of the queue
+	unloadQueue.pop();
+
+	// Check if the queue is empty
+	if(!unloadQueue.empty())
+	{
+		// Update the state of the new Mining Truck at the front of the queue
+		unloadQueue.front()->state = TruckState::eUnloading;
+	}
+}
+
+

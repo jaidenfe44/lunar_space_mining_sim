@@ -20,14 +20,19 @@
 class Station
 {
 	public:
-		Station() { /* TODO */ };
+		Station() {};
 
+		// TODO
 		void addTruck(MiningTruck* truck);
+
+		// TODO
+		void removeTruck();
 
 	private:
 		// Time it takes to unload a truck, in minutes
 		unsigned int unload_time = 5; 
 
+		// TODO
 		std::queue<MiningTruck*> unloadQueue;
 };
 
@@ -73,6 +78,9 @@ class StationHub
 		std::array<MiningTruck, numTrucks> trucks_a;
 
 		unsigned int nextAvailableStation = 0;
+
+		// Figure out what the next available station is
+		void updateNextAvailable();
 };
 
 

@@ -10,7 +10,7 @@ build_sim() {
 	echo "Building Sim"
 
 	if [ -d "./bin" ]; then
-		rm -rf bin/*
+		rm -rf bin/sim
 	else
 		mkdir bin
 	fi

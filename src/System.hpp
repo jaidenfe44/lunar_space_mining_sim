@@ -2,15 +2,33 @@
 #define SYSTEM_HPP
 
 // The number of hours to run the sim
-constexpr unsigned int simExecution = 72;
+constexpr unsigned int simExecutionHours = 72;
 
 // The sim exeuction time in minutes (system ticks for this design)
-constexpr unsigned int simRuntime = 60 * simExecution;
+constexpr unsigned int simRuntime = 60 * simExecutionHours;
 
-// The number of trucks that are available for mining
+// The number of mining trucks
 constexpr unsigned int numTrucks = 10;
 
-// The number of unloading stations there are
+// The number of unloading stations
 constexpr unsigned int numStations = 4;
+
+// MineTruck Travel Time to Mining Site
+constexpr unsigned int miningSiteTravelTime = 30;
+
+// The upper boundary of the time it takes to mine Helium-3, in Hours
+constexpr unsigned int mineTimeUpperBoundHours = 5; 
+
+// The lower boundary of the time it takes to mine Helium-3, in Hours
+constexpr unsigned int mineTimeLowerBoundHours = 1; 
+
+// The upper boundary of the time it takes to mine Helium-3, in minutes
+constexpr unsigned int mineTimeUpperBound = (mineTimeUpperBoundHours - mineTimeLowerBoundHours) * 60;
+
+// The mine time calculation offset (also the lower bound in minutes
+//			+ travel time to and from the mine site), in minutes
+constexpr unsigned int mineTimeOffset = ((mineTimeLowerBoundHours * 60) + (miningSiteTravelTime * 2));
+
+
 
 #endif // SYSTEM_HPP

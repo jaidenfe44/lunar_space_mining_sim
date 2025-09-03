@@ -1,6 +1,9 @@
 #ifndef MINING_TRUCK_HPP
 #define MINING_TRUCK_HPP
 
+#include <cstdlib>
+#include <ctime>
+
 /**
  * TODO
  */
@@ -22,8 +25,13 @@ enum class TruckState
 class MiningTruck
 {
 	public:
-		MiningTruck() { /* TODO */ };
+		MiningTruck()
+		{
+			// Seed random number generater based on system time for more accurate randomization
+			srand(time(0));
+		};
 
+		// TODO
 		void computeMineTime();
 
 		// Time unload at station or time away mining
@@ -35,8 +43,9 @@ class MiningTruck
 		// State showing when the truck is mining, unloaded, and queued to unload
 		TruckState state = TruckState::eMining;
 
-		// When unloading, this points to the station where its unloading
-		//Station* unload_station = nullptr;
+		// When unloading, this holds the index of the Station within the StationHub where the
+		//		MiningTruck is unloading
+		unsigned int unload_station = 0;
 
 	private:
 		// Travel time between an unload station and mining site, in minutes
