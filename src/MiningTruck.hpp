@@ -34,6 +34,9 @@ class MiningTruck
 		// TODO
 		void computeMineTime();
 
+		// TODO
+		void reportStats();
+
 		// Time unload at station or time away mining
 		unsigned int work_time = 0;
 
@@ -48,8 +51,14 @@ class MiningTruck
 		unsigned int unload_station = 0;
 
 	private:
-		// Travel time between an unload station and mining site, in minutes
-		unsigned int travel_time = 30; 
+		// TODO
+		unsigned int workLifetime = 0;
+
+		// TODO
+		unsigned int timeTraveling = 0;
+
+		// TODO
+		unsigned int loadsDelivered = 0;
 };
 
 

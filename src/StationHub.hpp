@@ -28,12 +28,20 @@ class Station
 		// TODO
 		void removeTruck();
 
+		// TODO
+		void updateAvailability();
+
 	private:
 		// Time it takes to unload a truck, in minutes
 		unsigned int unload_time = 5; 
 
 		// TODO
+		int availabilityWeight = 0;
+
+		// TODO
 		std::queue<MiningTruck*> unloadQueue;
+
+		friend class StationHub;
 };
 
 

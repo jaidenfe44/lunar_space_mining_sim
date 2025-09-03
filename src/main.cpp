@@ -24,6 +24,7 @@ int main() {
 		sysCount++;
 	}
 
+	// Generate the simulation report
 	stationHub.generateReport();
 
 	return 0;

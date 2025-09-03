@@ -5,7 +5,11 @@
 
 
 /**
- * TODO
+ * The main simulation progression function
+ *
+ * This function executes one minute of simulation time and "steps" through the simulation. Sequences through the Miningtruck array to update the system depending on the MiningTruck objects state (eMining, eUnloading, or eQueued).
+ * 
+ * @return void
  */
 void StationHub::step()
 {
@@ -18,9 +22,9 @@ void StationHub::step()
 		idx->state == TruckState::eQueued ? idx->wait_time++ : idx->work_time--;
 
 
+		// Check if the Truck is done with its current task (mining or unloading, queued trucks dont update work_time)
 		if(idx->work_time == 0)
 		{
-			// Check if truck was mining
 			switch(idx->state)
 			{
 				case TruckState::eMining:
@@ -29,11 +33,12 @@ void StationHub::step()
 					break;
 
 				case TruckState::eUnloading:
-					// Truck finished unloading
+					// Truck finished unloading, remove from the Station
 					removeFromStation(idx);
 					break;
 
 				default:
+					// Should never get here
 					break;
 			}
 		}
@@ -42,26 +47,44 @@ void StationHub::step()
 
 
 /**
- * Update the index to the next available station
+ * Update the index of the next available station
+ *
+ * This function uses the queue size of each Station to calculate the availability weight. The lower the
+ * weight the "more available" the Station is. The first instance of the lowest availability weight is
+ * stored in the StationHub::nextAvailableStation variable.
  *
  * @return void
  */
 void StationHub::updateNextAvailable()
 {
-	// Note: Currently just implementing round-robin availability
-	//      Future improvements could be made by using a weighted
-	//		optimization on queue size or time used or "helium mined"
-	//		as the weighting factor(s)
+	// Note: Currently just implementing first instance of lowest queue length. This could be improved
+	//		upon by attemting to sequence through the stations so the first few stations dont get favored
+	//		over the others. To accomplish this I would start by adding an adjustment to the availability
+	//		weight of the next station in the sequence (start with a -1 adjustment to weight) which should
+	//		favor the next station in line but only if there are other stations with the same weight (i.e.
+	//		queue length). Another improvement could be to look into the queue length and truck "work_time
+	//		remaining", which is how long the truck will need to stay at that specific station until it
+	//		can go mine again. Both are fairly straight forward and simple.
+	for(int i = 0; i < stations_a.size(); i++)
+	{
+		// Update the availability weight of the current Station index
+		stations_a[i].updateAvailability();
 
-	nextAvailableStation++;
-	nextAvailableStation %= numStations;
+		// Check if the availability weight of the current index is less than the availability weight at
+		// the previous nextAvailableStation index
+		if(stations_a[i].availabilityWeight < stations_a[nextAvailableStation].availabilityWeight)
+		{
+			// Update the next available Station index
+			nextAvailableStation = i;
+		}
+	}
 }
 
 
 /**
  * Add a MiningTruck to the next available Station
  *
- * @param A pointer to the truck object that is headed to the next
+ * @param A pointer to the MiningTruck object that is headed to the next
  *			available station or station queue
  *
  * @return void
@@ -74,34 +97,49 @@ void StationHub::addToStation(MiningTruck* truck)
 	// Store Station index
 	truck->unload_station = nextAvailableStation;
 
-	// Pick which Station should receive the next Mining Truck
+	// Update which Station should receive the next Mining Truck
 	updateNextAvailable();
 }
 
 
 /**
- * TODO
+ * Remove the provided MiningTruck from the Station it was unloading at
+ *
+ * @return void
  */
 void StationHub::removeFromStation(MiningTruck* truck)
 {
+	// Remove the MiningTruck from the Station at the index stored in the MiningTruck::unload_station variable
 	stations_a[truck->unload_station].removeTruck();
 
+	// Calculate the amount of time the Truck will be out mining
 	truck->computeMineTime();
+
+	// Update which Station should receive the next Mining Truck
+	updateNextAvailable();
 }
 
 
 /**
- * TODO
+ * Generate a report showing performance and efficiency statistics for each MiningTruck and Station
+ *
+ * @return void
  */
 void StationHub::generateReport()
 {
 	// TODO
-	printf("Generate Reports...\n");
+	printf("Generate Reports...\n\n");
+
+	for(int i = 0; i < trucks_a.size(); i++)
+	{
+		printf("Mining Truck %03i Report:\n", i);
+		trucks_a[i].reportStats();
+	}
 }
 
 
 /**
- * Add a truck to the station
+ * Add a MiningTruck to the Station
  *
  * @param A pointer to the truck object that has "returned" to the station
  *
@@ -121,11 +159,13 @@ void Station::addTruck(MiningTruck* truck)
 
 
 /**
- * TODO
+ * Remove a MiningTruck from the Station
+ *
+ * @return void
  */
 void Station::removeTruck()
 {
-	// Remove the truck from the front of the queue
+	// Remove the MiningTruck from the front of the queue
 	unloadQueue.pop();
 
 	// Check if the queue is empty
@@ -136,4 +176,18 @@ void Station::removeTruck()
 	}
 }
 
+
+/**
+ * Update the availability weight for the Station
+ *
+ * The availability weight is calculated by getting the size of the unloadQueue. The lower
+ * the weight, the more available the Station is for receiving MiningTrucks
+ *
+ * @return void
+ */
+void Station::updateAvailability()
+{
+	// Note: Could improve this by taking the remaining time the truck at the front of the queue into account
+	availabilityWeight = unloadQueue.size();
+}
 
