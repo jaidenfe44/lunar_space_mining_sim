@@ -52,7 +52,7 @@ The sim main loop will be in charge of system wide variables such as time (or "S
 
 The following is a flow diagram for the basic design of the main loop.
 
-![lunar_mining_sim_main_flow_diagram-2](https://github.com/user-attachments/assets/e0d57a73-3acc-4052-a6ae-cc06a66a61bb)
+![lunar_mining_sim_main_flow_diagram](https://github.com/user-attachments/assets/5aed72e4-8ebd-458f-b218-3b393e91a1cf)
 
 ### Mining Truck Design
 
