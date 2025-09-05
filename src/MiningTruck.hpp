@@ -59,6 +59,10 @@ class MiningTruck
 
 		// TODO
 		unsigned int loadsDelivered = 0;
+
+	#ifdef TEST_SUITE
+		friend class TestCase_MiningTruck;
+	#endif
 };
 
 

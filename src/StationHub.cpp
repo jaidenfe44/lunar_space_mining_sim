@@ -165,8 +165,8 @@ void Station::addTruck(MiningTruck* truck)
  */
 void Station::removeTruck()
 {
-	// Remove the MiningTruck from the front of the queue
-	unloadQueue.pop();
+	// Remove the MiningTruck from the front of the queue as long as the queue is not empty
+	if(!unloadQueue.empty()) unloadQueue.pop();
 
 	// Check if the queue is empty
 	if(!unloadQueue.empty())

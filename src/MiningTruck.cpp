@@ -20,10 +20,11 @@ void MiningTruck::computeMineTime()
 	// Update lifetime work minutes
 	workLifetime += work_time;
 
-	// TODO
+	// Update the amount of time the truck has spent traveling
 	timeTraveling += miningSiteTravelTime * 2;
 
-	// TODO
+	// Update the number of Helium-3 truck loads that have been delivered to a Station
+	// Note: This value is 1 more than the actual number of loads delivered, so 1 must be subtracted from it when reporting
 	loadsDelivered++;
 }
 

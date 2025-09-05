@@ -20,8 +20,32 @@ build_sim() {
 
 build_test() {
 
-	# TODO
-	echo "TODO: Build Test Suite"
+	echo "Build Test Suite"
+
+	if [ -d "./bin" ]; then
+		rm -rf bin/test
+	else
+		mkdir bin
+	fi
+
+	incList="-Isrc/
+			 -Itst/"
+
+	srcList="src/MiningTruck.cpp
+		src/StationHub.cpp
+		tst/TestSuite.cpp
+		tst/TestCase_MiningTruck.cpp
+		tst/TestCase_Station.cpp
+		tst/TestCase_StationHub.cpp
+		tst/main.cpp "
+
+	defs="-D TEST_SUITE"
+
+	#clang++ src/MiningTruck.cpp src/StationHub.cpp tst/TestSuite.cpp tst/main.cpp -o bin/test $verbose
+	clang++ $incList $srcList $defs -o bin/test $verbose
+
+	# Run the test suite
+	./bin/test
 }
 
 usage() {

@@ -33,7 +33,7 @@ class Station
 
 	private:
 		// Time it takes to unload a truck, in minutes
-		unsigned int unload_time = 5; 
+		unsigned int unload_time = unloadTime;
 
 		// TODO
 		int availabilityWeight = 0;
@@ -42,6 +42,11 @@ class Station
 		std::queue<MiningTruck*> unloadQueue;
 
 		friend class StationHub;
+
+	#ifdef TEST_SUITE
+		friend class TestCase_Station;
+		friend class TestCase_StationHub;
+	#endif
 };
 
 
@@ -89,6 +94,10 @@ class StationHub
 
 		// Figure out what the next available station is
 		void updateNextAvailable();
+
+	#ifdef TEST_SUITE
+		friend class TestCase_StationHub;
+	#endif
 };
 
 

@@ -29,6 +29,9 @@ constexpr unsigned int mineTimeUpperBound = (mineTimeUpperBoundHours - mineTimeL
 //			+ travel time to and from the mine site), in minutes
 constexpr unsigned int mineTimeOffset = ((mineTimeLowerBoundHours * 60) + (miningSiteTravelTime * 2));
 
+// The amount of time it takes a MiningTruck at a Station to unload
+constexpr unsigned int unloadTime = 5;
+
 
 
 #endif // SYSTEM_HPP
