@@ -8,11 +8,19 @@ constexpr unsigned int simExecutionHours = 72;
 constexpr unsigned int simRuntime = 60 * simExecutionHours;
 
 // The number of mining trucks
+#ifdef MINING_TRUCK_NUM
+constexpr unsigned int numTrucks = MINING_TRUCK_NUM;
+#else
 constexpr unsigned int numTrucks = 10;
+#endif
 
 // The number of unloading stations
 // Note: For the test suite to work we need at least 3 Stations
+#ifdef STATION_NUM
+constexpr unsigned int numStations = STATION_NUM;
+#else
 constexpr unsigned int numStations = 4;
+#endif
 
 // MineTruck Travel Time to Mining Site
 constexpr unsigned int miningSiteTravelTime = 30;

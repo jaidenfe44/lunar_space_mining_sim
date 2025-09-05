@@ -2,6 +2,8 @@
 
 
 build_target='' # Default to empty (no target)
+stationNum=''
+miningTruckNum=''
 verbose=''
 
 
@@ -15,7 +17,17 @@ build_sim() {
 		mkdir bin
 	fi
 
-	clang++ src/MiningTruck.cpp src/StationHub.cpp src/main.cpp -o bin/sim $verbose
+	defs=""
+
+	if ! [[ -z "$stationNum" ]]; then
+		defs+=" -D STATION_NUM=$stationNum"
+	fi
+
+	if ! [[ -z "$miningTruckNum" ]]; then
+		defs+=" -D MINING_TRUCK_NUM=$miningTruckNum"
+	fi
+
+	clang++ $defs src/MiningTruck.cpp src/StationHub.cpp src/main.cpp -o bin/sim $verbose
 
 	# Run the sim
 	./bin/sim
@@ -52,21 +64,56 @@ build_test() {
 }
 
 usage() {
-	printf "Usage:\n"
-	printf "   ./build.sh -t <target> : Build for one of the following targets:\n"
-	printf "                      sim : Build the mining sim\n"
-	printf "                     test : Build the mining sim test suite\n"
+	echo "Usage: ./build.sh -t <target> [-s <stationNum>] [-m <miningTruckNum>] [-v] [-h]"
+	echo "    <target>:"
+	echo "          sim - Build and run the mining sim"
+	echo "         test - Build and run the mining sim test suite"
+	echo "    Options:"
+	echo "         -s <stationNum>     - Update the number of Stations used in the sim,"
+    echo "                               where <stationNum> is an integer greater than 0"
+	echo "         -m <miningTruckNum> - Update the number of MiningTrucks in the sim,"
+	echo "                               where <miningTruckNum> is an interger greater than 0"
+	echo "         -v                  - Build with verbose error messages"
+    echo "         -h                  - Display help message"
 }
 
 
-while getopts 't:v' flag; do
+while getopts 't:vs:m:h' flag; do
   case "${flag}" in
 	t) build_target="${OPTARG}" ;;
+	s) stationNum="${OPTARG}" ;;
+	m) miningTruckNum="${OPTARG}" ;;
 	v) verbose='-v' ;;
+	h) usage
+	   exit 1 ;;
     *) usage
        exit 1 ;;
   esac
 done
+
+if ! [[ -z "$stationNum" ]]; then
+	if ! [[ "$stationNum" =~ ^[0-9]+$ ]]; then
+		echo "Please enter a Station Number integer that is 1 or more"
+		usage
+		exit 1
+	elif [[ "$stationNum" == "0" ]]; then
+		echo "Please enter a Station Number integer that is 1 or more"
+		usage
+		exit 1
+	fi
+fi
+
+if ! [[ -z "$miningTruckNum" ]]; then
+	if ! [[ "$miningTruckNum" =~ ^[0-9]+$ ]]; then
+		echo "Please enter a Mining Truck Number integer that is 1 or more"
+		usage
+		exit 1
+	elif [[ "$miningTruckNum" == "0" ]]; then
+		echo "Please enter a Mining Truck Number integer that is 1 or more"
+		usage
+		exit 1
+	fi
+fi
 
 if [[ "$build_target" = 'test' ]]; then
 	build_test
