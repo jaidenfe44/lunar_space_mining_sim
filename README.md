@@ -1,5 +1,18 @@
 # Lunar Space Mining Simulation
 
+## How to Build/Run:
+
+A `build.sh` script is supplied in the top most directory. To build and execute the simulator, run `./build.sh -t sim`. This builds the simulator and runs the simulator executable. The simulator executable is stored at `build/sim`. To run the test suite, run `./build.sh -t test`. Similarly, this builds and runs the test suite executable. The test suite executable is stored at `build/test`. By default the number of stations is `4` and the number of mining trucks is `10`. To modify these values add the following flags:
+
+```
+    -s <stationNum>, where <stationNum> is an integer greater than 0
+    -m <miningTruckNum>, where <miningTruckNum> is an integer greater than 0
+```
+
+In addition, to access the help menu, simply add the `-h` flag.
+
+---
+
 ## Objective:
 
 You are tasked with developing a simulation for a lunar Helium-3 space mining operation. This simulation will manage and track the efficiency of mining trucks and unload stations over a continuous 72-hour operation.
@@ -40,6 +53,8 @@ It is not the objective to spend an excessive amount of time on this challenge o
 developed system. Feel free to include pseudocode (in comments) to explain what you would do if
 given more time or resources. The focus is on showcasing your problem-solving and coding skills
 within a reasonable time frame.
+
+---
 
 <br><br>
 
