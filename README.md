@@ -66,9 +66,9 @@ This section is used as a scratch pad space for notes and design considerations 
 
 The sim main loop will be in charge of system count and stepping through the simulator. The `system count` represents minutes the simulation is running. In this approach the sim runtime is 4320 minutes (72 hours). The `main.cpp` file implements the system runtime loop (in minutes) and calls the `StationHub::step()` function for every simulation minute. Everything within the flow diagram is contained within this step function, with the exception of report generation and system count handling.
 
-The following is a flow diagram representing the design of the main loop and step functionality.
+The following is a flow diagram representing the design of the `main loop` and `StationHub::step()` functionality.
 
-![lunar_mining_sim_main_flow_diagram](https://github.com/user-attachments/assets/5aed72e4-8ebd-458f-b218-3b393e91a1cf)
+![lunar_mining_sim_main_flow_diagram-4](https://github.com/user-attachments/assets/42dd2a5d-0845-4a7f-a292-cf8ba6b2d442)
 
 ## StationHub/Station Design
 
