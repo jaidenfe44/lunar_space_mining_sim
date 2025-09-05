@@ -128,6 +128,9 @@ bool TestCase_StationHub::TC_step()
 	unsigned int workVal0 = 20;
 	unsigned int workVal1 = 63;
 	unsigned int workVal2 = 19;
+	unsigned int waitVal0 = 0;
+	unsigned int waitVal1 = 0;
+	unsigned int waitVal2 = 0;
 
 	nextAvailableStation = 0;
 	addToStation(&trucks_a[0]);
@@ -136,6 +139,9 @@ bool TestCase_StationHub::TC_step()
 	trucks_a[0].work_time = workVal0;
 	trucks_a[1].work_time = workVal1;
 	trucks_a[2].work_time = workVal2;
+	trucks_a[0].wait_time = waitVal0;
+	trucks_a[1].wait_time = waitVal1;
+	trucks_a[2].wait_time = waitVal2;
 
 	// Verify initial conditions
 	tcAssert(trucks_a[0].unload_station == 0, __func__, "MiningTruck[0] was not added to Station[0]");
@@ -149,7 +155,37 @@ bool TestCase_StationHub::TC_step()
 	tcAssert(trucks_a[1].work_time == workVal1, __func__, "MiningTruck::work_time for MiningTruck[1] (Queued) did not remain the same");
 	tcAssert(trucks_a[2].work_time == (workVal2 - 1), __func__, "MiningTruck::work_time for MiningTruck[2] (Mining) was not decremented");
 
-	tcAssert(false, __func__, "Need to flesh out this test case a bit more...");
+	tcAssert(trucks_a[0].wait_time == waitVal0, __func__, "MiningTruck::wait_time for MiningTruck[0] (Unloading) was modified");
+	tcAssert(trucks_a[1].wait_time == (waitVal1 + 1), __func__, "MiningTruck::work_time for MiningTruck[1] (Queued) did not increase");
+	tcAssert(trucks_a[2].wait_time == waitVal2, __func__, "MiningTruck::work_time for MiningTruck[2] (Mining) was modified");
+
+	// Set mining truck to finish mining next step
+	trucks_a[2].work_time = 1;
+	nextAvailableStation = 1;
+
+	// Execute function to add truck to station
+	step();
+
+	// Verify mining truck is now added to a station
+	tcAssert(trucks_a[2].state != TruckState::eMining, __func__, "The MiningTruck::state is still eMining");
+	tcAssert(trucks_a[2].unload_station == 1, __func__, "The MiningTruck::unload_station is not storing to the right station index");
+	tcAssert(stations_a[1].unloadQueue.front() == &trucks_a[2], __func__, "The front of Station[1] unloadQueue is not MiningTruck[2]");
+	tcAssert(trucks_a[2].work_time == stations_a[1].unload_time, __func__, "MiningTruck::work_time is not Station[1] unload_time");
+
+	// Set mining truck to finish unloading next step
+	trucks_a[0].work_time = 1;
+
+	// Verify truck[0] is at station[0]
+	tcAssert(stations_a[0].unloadQueue.front() == &trucks_a[0], __func__, "Station[0] is not currently unloading MiningTruck[0]");
+	
+	// Execute function to remove truck from station
+	step();
+
+	// Verify that the unloading truck was removed from station 0
+	tcAssert(trucks_a[0].state == TruckState::eMining, __func__, "The MiningTruck::state was not updated to eMining");
+	tcAssert(trucks_a[0].work_time > stations_a[0].unload_time, __func__, "The MiningTruck::work_time was not updated to a valid Mining time (> Station[0] unload_time)");
+	tcAssert(stations_a[0].unloadQueue.front() != &trucks_a[0], __func__, "The MiningTruck was not removed! Station[0] unloadQueue.front() is still MiningTruck[0]");
+	
 	
 	// Cleanup
 	cleanup();
