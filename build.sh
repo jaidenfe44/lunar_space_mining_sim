@@ -16,6 +16,9 @@ build_sim() {
 	fi
 
 	clang++ src/MiningTruck.cpp src/StationHub.cpp src/main.cpp -o bin/sim $verbose
+
+	# Run the sim
+	./bin/sim
 }
 
 build_test() {

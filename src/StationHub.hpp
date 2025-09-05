@@ -8,7 +8,7 @@
 #include <queue>
 
 /**
- * Station : TODO
+ * Station : This class defines a Station where a MiningTruck unloads Helium-3 or queues to unload.
  *
  * Requirements:
  *   - Unloading the mined Helium-3 at a station takes 5 minutes
@@ -22,23 +22,36 @@ class Station
 	public:
 		Station() {};
 
-		// TODO
+		// Add a truck to this stations queue
 		void addTruck(MiningTruck* truck);
 
-		// TODO
+		// Remove a truck from this stations queue, meaning the truck has finished unloading
 		void removeTruck();
 
-		// TODO
+		// Update the availability weight used in deciding which station the next truck should go to
 		void updateAvailability();
+
+		// Print out statistics about the station
+		void reportStats();
 
 	private:
 		// Time it takes to unload a truck, in minutes
 		unsigned int unload_time = unloadTime;
 
-		// TODO
+		// Number of MiningTrucks unloaded
+		unsigned int numMiningTrucks = 0;
+
+		// Max number of queued trucks
+		unsigned int maxQueue = 0;
+
+		// TODO: average number of queued trucks: would add this calculation in, but would take more work than I have time for at the moment
+
+		// TODO: Would add additional telemetry points to properly track efficiency and statistics about the stations 
+
+		// The availability score used to calculate which station the next truck should go to
 		int availabilityWeight = 0;
 
-		// TODO
+		// The queue to unload at the station. Front of the queue is considered "actively unloading"
 		std::queue<MiningTruck*> unloadQueue;
 
 		friend class StationHub;
@@ -52,7 +65,7 @@ class Station
 
 
 /**
- * TODO
+ * This class contains all Station and MiningTruck objects and is in charge of progressing through the simulation minutes by minute
  */
 class StationHub
 {
@@ -87,9 +100,13 @@ class StationHub
 			}
 		};
 
+		// An array containing all Station objects
 		std::array<Station, numStations> stations_a;
+
+		// An array containing all MiningTruck objects
 		std::array<MiningTruck, numTrucks> trucks_a;
 
+		// A variable holding the index into stations_a of the next available Station a MiningTruck will go to
 		unsigned int nextAvailableStation = 0;
 
 		// Figure out what the next available station is

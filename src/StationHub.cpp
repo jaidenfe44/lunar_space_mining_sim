@@ -130,13 +130,20 @@ void StationHub::removeFromStation(MiningTruck* truck)
  */
 void StationHub::generateReport()
 {
-	// TODO
 	printf("Generate Reports...\n\n");
 
 	for(int i = 0; i < trucks_a.size(); i++)
 	{
 		printf("Mining Truck %03i Report:\n", i);
 		trucks_a[i].reportStats();
+	}
+
+	printf("\n");
+
+	for(int s = 0; s < stations_a.size(); s++)
+	{
+		printf("Station %03i Report:\n", s);
+		stations_a[s].reportStats();
 	}
 }
 
@@ -155,6 +162,12 @@ void Station::addTruck(MiningTruck* truck)
 
 	// Add the mining truck to the queue
 	unloadQueue.push(truck);
+
+	// Update number of trucks unloaded at station
+	numMiningTrucks++;
+
+	// Update the max size of the queue if its increased
+	if(unloadQueue.size() > maxQueue) maxQueue = unloadQueue.size();
 
 	// Update the trucks work time
 	truck->work_time = unload_time;
@@ -192,5 +205,18 @@ void Station::updateAvailability()
 {
 	// Note: Could improve this by taking the remaining time the truck at the front of the queue into account
 	availabilityWeight = unloadQueue.size();
+}
+
+
+/**
+ * Print out statistics about the Station
+ *
+ * @return void
+ */
+void Station::reportStats()
+{
+	printf("    Unloading Time          : %4i minutes\n", unload_time);
+	printf("    Number of Mining Trucks : %4i\n", numMiningTrucks);
+	printf("    Maximum Size of Queue   : %4i\n", maxQueue);
 }
 

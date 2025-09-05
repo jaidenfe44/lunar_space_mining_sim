@@ -30,7 +30,9 @@ void MiningTruck::computeMineTime()
 
 
 /**
- * TODO
+ * Prints out MiningTruck statistics
+ *
+ * @return void
  */
 void MiningTruck::reportStats()
 {
