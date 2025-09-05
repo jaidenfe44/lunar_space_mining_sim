@@ -149,7 +149,7 @@ bool TestCase_StationHub::TC_step()
 	tcAssert(trucks_a[1].work_time == workVal1, __func__, "MiningTruck::work_time for MiningTruck[1] (Queued) did not remain the same");
 	tcAssert(trucks_a[2].work_time == (workVal2 - 1), __func__, "MiningTruck::work_time for MiningTruck[2] (Mining) was not decremented");
 
-	tcAssert(false, __func__, "Need to flesh out this test case a bit more...")
+	tcAssert(false, __func__, "Need to flesh out this test case a bit more...");
 	
 	// Cleanup
 	cleanup();

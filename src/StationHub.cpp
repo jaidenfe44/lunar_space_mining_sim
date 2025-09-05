@@ -115,11 +115,14 @@ void StationHub::removeFromStation(MiningTruck* truck)
 	// Remove the MiningTruck from the Station at the index stored in the MiningTruck::unload_station variable
 	stations_a[truck->unload_station].removeTruck();
 
-	// Calculate the amount of time the Truck will be out mining
-	truck->computeMineTime();
+	if(truck->state == TruckState::eMining)
+	{
+		// Calculate the amount of time the Truck will be out mining
+		truck->computeMineTime();
 
-	// Update which Station should receive the next Mining Truck
-	updateNextAvailable();
+		// Update which Station should receive the next Mining Truck
+		updateNextAvailable();
+	}
 }
 
 
@@ -182,7 +185,12 @@ void Station::addTruck(MiningTruck* truck)
 void Station::removeTruck()
 {
 	// Remove the MiningTruck from the front of the queue as long as the queue is not empty
-	if(!unloadQueue.empty()) unloadQueue.pop();
+	if(!unloadQueue.empty())
+	{
+		// Update truck thats finished unloading to set state to mining and remove from queue
+		unloadQueue.front()->state = TruckState::eMining;
+		unloadQueue.pop();
+	}
 
 	// Check if the queue is empty
 	if(!unloadQueue.empty())
