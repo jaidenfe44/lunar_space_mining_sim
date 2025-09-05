@@ -82,7 +82,8 @@ Here we see that the `StationHub` keeps track of the next available station in a
 
 The following diagram shows the flow of the `StationHub::removeFromStation()` and `Station::removeTruck()` functions:
 
-![lunar_mining_sim_removeTruckFromStation_flow_diagram](https://github.com/user-attachments/assets/38325b97-02ab-4114-aff8-0d649d26572d)
+![lunar_mining_sim_removeTruckFromStation_flow_diagram-2](https://github.com/user-attachments/assets/03ce316e-d4b5-433b-9e00-2e3fbefa51c5)
+
 
 Here we leverage the stored `MiningTruck::unload_station` variable that contains the index of the Station that particular truck is unloading at. This allows the `StationHub` to index directly into the Station array and call `Station::removeTruck()` directly on the correct Station object. Once the `MiningTruck` is removed from the queue, we check if the queue is empty. If it is not empty, then we need to update the state of the `MiningTruck` now at the front of the queue to `eUnloading` instead of `eQueued` so that the `StationHub::step()` function decrements the `MiningTruck::work_time` (down counter representing how many steps to "work" and take up resources until it can switch states again) rather than incrementing the `MiningTruck::wait_time` (up counter representing the amount of time spent in a queue waiting for available resources).
 
