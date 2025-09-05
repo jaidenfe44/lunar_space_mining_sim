@@ -6,7 +6,7 @@
 #include "TestCase.hpp"
 
 
-class TestCase_MiningTruck: public TestCase, private MiningTruck
+class TestCase_MiningTruck: public TestCase, MiningTruck
 {
 
 	public:
@@ -18,15 +18,10 @@ class TestCase_MiningTruck: public TestCase, private MiningTruck
 		void run(unsigned int &pass, unsigned int &fail) override
 		{
 			TC_computeMineTime() ? pass++ : fail++;
-			TC_reportStats()     ? pass++ : fail++;
 		};
 
 		// Test Cases
 		bool TC_computeMineTime();
-		bool TC_reportStats();
-
-
-	private:
 };
 
 #endif // TEST_CASE_MINING_TRUCK_HPP

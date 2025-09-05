@@ -109,6 +109,9 @@ void StationHub::addToStation(MiningTruck* truck)
  */
 void StationHub::removeFromStation(MiningTruck* truck)
 {
+	// Check if the truck is unloading, if not we cant remove it from the queue
+	if(truck->state != TruckState::eUnloading) return;
+
 	// Remove the MiningTruck from the Station at the index stored in the MiningTruck::unload_station variable
 	stations_a[truck->unload_station].removeTruck();
 

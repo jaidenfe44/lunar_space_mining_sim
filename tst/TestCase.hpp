@@ -15,10 +15,12 @@ class TestCase
 		{
 		    if(!expr)
 		    {   
-		        printf("Failed\n        [%s] %s\n", func, msg);
-		        throw std::runtime_error(msg);
+		        printf("        [%s] %s\n", func, msg);
+				tcPass = false;
 		    }
 		}
+
+		bool tcPass = true;
 };
 
 #endif // TEST_CASE_HPP

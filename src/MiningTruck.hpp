@@ -5,7 +5,7 @@
 #include <ctime>
 
 /**
- * TODO
+ * An enumeration class representing the state of the MiningTruck
  */
 enum class TruckState
 {
@@ -31,10 +31,10 @@ class MiningTruck
 			srand(time(0));
 		};
 
-		// TODO
+		// Calculate the time it will take to mine and travel to and from the mining site
 		void computeMineTime();
 
-		// TODO
+		// Print out a report on the statistics and efficiency of this truck
 		void reportStats();
 
 		// Time unload at station or time away mining
@@ -51,13 +51,13 @@ class MiningTruck
 		unsigned int unload_station = 0;
 
 	private:
-		// TODO
+		// The total time, in minutes, the truck has been operational
 		unsigned int workLifetime = 0;
 
-		// TODO
+		// The total time, in minutes, the truck has traveled between a mining site and a station
 		unsigned int timeTraveling = 0;
 
-		// TODO
+		// The number of Helium-3 loads delivered to a station. Note: this value is 1 greater than the actual number of loads delivered
 		unsigned int loadsDelivered = 0;
 
 	#ifdef TEST_SUITE

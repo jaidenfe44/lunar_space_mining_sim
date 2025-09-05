@@ -6,7 +6,7 @@
 #include "TestCase.hpp"
 
 
-class TestCase_Station: public TestCase, private Station
+class TestCase_Station: public TestCase, Station
 {
 
 	public:
